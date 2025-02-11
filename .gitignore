@@ -1,0 +1,8 @@
+a.out
+lib/
+build/
+*.o
+infile
+outfile
+pipex
+.vscode/
