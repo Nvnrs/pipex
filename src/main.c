@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:31:17 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/11 18:11:11 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:45:12 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void print_2d_tab(char **tab)
 	i = 0;
 	while (tab[i])
 	{
-		ft_printf("%s\n", tab[i]);
+		dprintf(2, "%s\n", tab[i]);
 		i++;
 	}
 	ft_printf("\n");
@@ -109,24 +109,6 @@ char **get_paths_in_path_env(char *path_env)
 	return (paths_in_path_env);
 }
 
-char *get_path_cmd(char **split_cmd, char **envp)
-{
-	char *path_env;
-	char **paths_in_path_env;
-	char *path_cmd;
-	
-	path_cmd = split_cmd[0];
-	if (str_contain_c(path_cmd, '/'))
-	{
-		return (ft_strdup(path_cmd));
-	}
-	path_env = get_var_path_in_env(envp);
-	paths_in_path_env = get_paths_in_path_env(path_env);
-	path_cmd = tests_path_for_find_cmd(path_cmd, paths_in_path_env);
-	free_split(paths_in_path_env);
-	return (path_cmd);
-}
-
 int	len_split(char **tab)
 {
 	int i;
@@ -136,6 +118,26 @@ int	len_split(char **tab)
 		i++;
 	return (i);
 }
+
+char *get_path_cmd(char **split_cmd, char **envp)
+{
+	char *path_env;
+	char **paths_in_path_env;
+	char *path_cmd;
+	
+	path_cmd = split_cmd[0];
+	if (str_contain_c(path_cmd, '/'))
+		return (ft_strdup(path_cmd));
+	if (len_split(envp) == 0)
+		return (NULL);
+	path_env = get_var_path_in_env(envp);
+	paths_in_path_env = get_paths_in_path_env(path_env);
+	path_cmd = tests_path_for_find_cmd(path_cmd, paths_in_path_env);
+	free_split(paths_in_path_env);
+	return (path_cmd);
+}
+
+
 
 void	run_cmd(char *cmd, char **envp)
 {
@@ -151,7 +153,7 @@ void	run_cmd(char *cmd, char **envp)
 	path_cmd = get_path_cmd(split_cmd, envp);
 	if (path_cmd == NULL)
 	{
-		ft_putstr_fd("Cmd not found :", 2);
+		ft_putstr_fd("command not found :", 2);
 		ft_putstr_fd(split_cmd[0], 2);
 		ft_putstr_fd("\n", 2);
 		free_split(split_cmd);
@@ -159,11 +161,13 @@ void	run_cmd(char *cmd, char **envp)
 	}
 	if (execve(path_cmd, split_cmd, envp) == -1)
 	{
+		perror(path_cmd);
 		free(path_cmd);
 		free_split(split_cmd);
 		exit(EXIT_FAILURE);
 	}
 }
+
 void	first_process_child(char *path_infile, char *cmd, int *pipe_fd, char **envp)
 {
 	int infile;
@@ -188,7 +192,7 @@ void	last_process_child(char *path_outfile, char *cmd, int *pipe_fd, char **envp
 {
 	int file;
 
-	file = open(path_outfile, O_CREAT| O_WRONLY | O_TRUNC);
+	file = open(path_outfile, O_CREAT| O_WRONLY | O_TRUNC, 0666);
 	if (file < 0)
 	{
 		close(pipe_fd[0]);
