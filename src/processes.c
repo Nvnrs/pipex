@@ -6,11 +6,22 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:38:54 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 14:25:06 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:33:24 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	not_found_error(char *cmd)
+{
+	if (cmd)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putstr_fd("command not found", 2);
+	ft_putstr_fd("\n", 2);
+}
 
 void	run_cmd(char *cmd, char **envp)
 {
@@ -20,20 +31,20 @@ void	run_cmd(char *cmd, char **envp)
 	split_cmd = ft_split(cmd, ' ');
 	if (len_split(split_cmd) == 0)
 	{
+		not_found_error(NULL);
 		free(split_cmd);
 		exit(EXIT_FAILURE);
 	}
 	path_cmd = get_path_cmd(split_cmd, envp);
 	if (path_cmd == NULL)
 	{
-		ft_putstr_fd(split_cmd[0], 2);
-		ft_putstr_fd(": command not found", 2);
-		ft_putstr_fd("\n", 2);
+		not_found_error(split_cmd[0]);
 		free_split(split_cmd);
 		exit(EXIT_FAILURE);
 	}
 	if (execve(path_cmd, split_cmd, envp) == -1)
 	{
+		perror(path_cmd);
 		free(path_cmd);
 		free_split(split_cmd);
 		exit(EXIT_FAILURE);

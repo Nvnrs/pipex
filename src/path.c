@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:41:06 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 14:35:09 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:34:36 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*tests_path_for_find_cmd(char *cmd, char **tests_path)
 	{
 		path_with_slash = ft_strjoin(tests_path[i], "/");
 		path_cmd = ft_strjoin(path_with_slash, cmd);
-		if (access(path_cmd, F_OK) == 0 && (access(path_cmd, X_OK) == 0))
+		if (access(path_cmd, F_OK | X_OK) == 0)
 		{
 			free(path_with_slash);
 			return (path_cmd);
@@ -80,7 +80,7 @@ char	*get_path_cmd(char **split_cmd, char **envp)
 	path_cmd = split_cmd[0];
 	if (str_contain_c(path_cmd, '/'))
 	{
-		if (access(path_cmd, F_OK) == -1 || (access(path_cmd, X_OK) == -1))
+		if (access(path_cmd, F_OK | X_OK) == -1)
 		{
 			perror(path_cmd);
 			free_split(split_cmd);
