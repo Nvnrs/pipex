@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:32:19 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/11 14:35:38 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 11:47:48 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 
-// typedef struct s_cmd
-// {
-// 	char *name;
-// 	char *args;
-// 	char *path;
-// } t_cmd;
+
+// PROCESSES
+void	first_process_child(char *path_infile, char *cmd, int *pipe_fd, char **envp);
+void	last_process_child(char *path_outfile, char *cmd, int *pipe_fd, char **envp);
+
+
+// PATH
+char *get_path_cmd(char **split_cmd, char **envp);
+
+// UTILS
+void	free_split(char **tab);
+int		len_split(char **tab);
 
 #endif

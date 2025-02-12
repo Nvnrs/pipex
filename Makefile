@@ -1,5 +1,8 @@
 SRC_DIR = ./src
 SRC= $(SRC_DIR)/main.c \
+	$(SRC_DIR)/path.c \
+	$(SRC_DIR)/processes.c \
+	$(SRC_DIR)/utils.c \
 
 
 OBJ = $(SRC:.c=.o)
