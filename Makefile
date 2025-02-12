@@ -6,17 +6,21 @@ SRC= $(SRC_DIR)/main.c \
 
 
 OBJ = $(SRC:.c=.o)
-# CFLAGS += -Wall -Wextra -Werror
+CC = gcc
+CFLAGS += -Wall -Wextra -Werror
 NAME = pipex
 
 LIB_DIR = ./lib
 MYLIB42_DIR = $(LIB_DIR)/MYLIB42
 MYLIB42 = $(MYLIB42_DIR)/mylib42.a
 
+%.o: %.c 
+	$(CC) $(CFLAGS) -c $(<) -o $(@)
+
 all : $(NAME)
 
 $(NAME) :  $(MYLIB42) $(OBJ)
-	gcc -g $(CFLAGS) $(OBJ) $(MYLIB42) -o $(NAME)
+	$(CC) -g $(CFLAGS) $(OBJ) $(MYLIB42) -o $(NAME)
 
 $(MYLIB42_DIR) :
 	git clone https://github.com/Nvnrs/MYLIB42.git $(MYLIB42_DIR)
