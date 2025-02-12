@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:32:19 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 13:24:01 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:14:37 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdio.h>
 # include <string.h>
 
+void	print_2d_tab(char **tab);
 void	first_process_child(char *path_infile, char *cmd,
 			int *pipe_fd, char **envp);
 void	last_process_child(char *path_outfile, char *cmd,

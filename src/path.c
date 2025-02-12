@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:41:06 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 13:14:06 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:35:09 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ char	*get_var_path_in_env(char **envp)
 	while (envp[i])
 	{
 		if (strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
+			return (envp[i]);
 		i++;
 	}
-	return (envp[i]);
+	return (NULL);
 }
 
 char	*tests_path_for_find_cmd(char *cmd, char **tests_path)
@@ -88,9 +88,9 @@ char	*get_path_cmd(char **split_cmd, char **envp)
 		}
 		return (ft_strdup(path_cmd));
 	}
-	if (len_split(envp) == 0)
-		return (NULL);
 	path_env = get_var_path_in_env(envp);
+	if (path_env == NULL)
+		return (NULL);
 	paths_in_path_env = get_paths_in_path_env(path_env);
 	path_cmd = tests_path_for_find_cmd(path_cmd, paths_in_path_env);
 	free_split(paths_in_path_env);

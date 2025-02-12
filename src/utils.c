@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:42:40 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 13:17:02 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:02:51 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	len_split(char **tab)
 	int	i;
 
 	i = 0;
+	if (tab == NULL)
+		return (0);
 	while (tab[i])
 		i++;
 	return (i);
