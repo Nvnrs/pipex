@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:38:54 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 11:40:41 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:15:29 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	run_cmd(char *cmd, char **envp)
 {
-	char **split_cmd;
-	char *path_cmd;
+	char	**split_cmd;
+	char	*path_cmd;
 
-	split_cmd =  ft_split(cmd, ' ');
+	split_cmd = ft_split(cmd, ' ');
 	if (len_split(split_cmd) == 0)
 	{
 		free(split_cmd);
@@ -40,10 +40,10 @@ void	run_cmd(char *cmd, char **envp)
 	}
 }
 
-
-void	first_process_child(char *path_infile, char *cmd, int *pipe_fd, char **envp)
+void	first_process_child(char *path_infile, char *cmd,
+	int *pipe_fd, char **envp)
 {
-	int infile;
+	int	infile;
 
 	infile = open(path_infile, O_RDONLY);
 	if (infile < 0)
@@ -61,11 +61,12 @@ void	first_process_child(char *path_infile, char *cmd, int *pipe_fd, char **envp
 	run_cmd(cmd, envp);
 }
 
-void	last_process_child(char *path_outfile, char *cmd, int *pipe_fd, char **envp)
+void	last_process_child(char *path_outfile, char *cmd,
+	int *pipe_fd, char **envp)
 {
-	int file;
+	int	file;
 
-	file = open(path_outfile, O_CREAT| O_WRONLY | O_TRUNC, 0666);
+	file = open(path_outfile, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (file < 0)
 	{
 		close(pipe_fd[0]);

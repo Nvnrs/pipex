@@ -6,15 +6,15 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:42:40 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 11:50:51 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:17:02 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void print_2d_tab(char **tab)
+void	print_2d_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -27,7 +27,7 @@ void print_2d_tab(char **tab)
 
 void	free_split(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -37,9 +37,10 @@ void	free_split(char **tab)
 	}
 	free(tab);
 }
+
 int	len_split(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])

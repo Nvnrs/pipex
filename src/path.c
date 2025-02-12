@@ -6,28 +6,27 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:41:06 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 11:47:29 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:14:06 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "pipex.h"
 
-char *get_var_path_in_env(char **envp)
+char	*get_var_path_in_env(char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
 	{
 		if (strncmp(envp[i], "PATH=", 5) == 0)
-			break;
+			break ;
 		i++;
 	}
 	return (envp[i]);
 }
 
-char *tests_path_for_find_cmd(char *cmd, char **tests_path)
+char	*tests_path_for_find_cmd(char *cmd, char **tests_path)
 {
 	int		i;
 	char	*path_cmd;
@@ -38,7 +37,7 @@ char *tests_path_for_find_cmd(char *cmd, char **tests_path)
 	{
 		path_with_slash = ft_strjoin(tests_path[i], "/");
 		path_cmd = ft_strjoin(path_with_slash, cmd);
-		if (access(path_cmd, F_OK) == 0 && (access(path_cmd, X_OK) == 0 ))
+		if (access(path_cmd, F_OK) == 0 && (access(path_cmd, X_OK) == 0))
 		{
 			free(path_with_slash);
 			return (path_cmd);
@@ -49,11 +48,11 @@ char *tests_path_for_find_cmd(char *cmd, char **tests_path)
 	}
 	return (NULL);
 }
-char *skip_name_of_var(char *first_path)
-{
-	char *new_path_skip;
 
-	int i;
+char	*skip_name_of_var(char *first_path)
+{
+	char	*new_path_skip;
+	int		i;
 
 	i = 0;
 	while (first_path[i] != '/')
@@ -63,7 +62,7 @@ char *skip_name_of_var(char *first_path)
 	return (new_path_skip);
 }
 
-char **get_paths_in_path_env(char *path_env)
+char	**get_paths_in_path_env(char *path_env)
 {
 	char	**paths_in_path_env;
 
@@ -72,16 +71,16 @@ char **get_paths_in_path_env(char *path_env)
 	return (paths_in_path_env);
 }
 
-char *get_path_cmd(char **split_cmd, char **envp)
+char	*get_path_cmd(char **split_cmd, char **envp)
 {
-	char *path_env;
-	char **paths_in_path_env;
-	char *path_cmd;
-	
+	char	*path_env;
+	char	**paths_in_path_env;
+	char	*path_cmd;
+
 	path_cmd = split_cmd[0];
 	if (str_contain_c(path_cmd, '/'))
 	{
-		if (access(path_cmd, F_OK) == -1 || (access(path_cmd, X_OK) == -1 ))
+		if (access(path_cmd, F_OK) == -1 || (access(path_cmd, X_OK) == -1))
 		{
 			perror(path_cmd);
 			free_split(split_cmd);
