@@ -34,7 +34,7 @@ clean :
 
 fclean : clean
 	rm -rf $(NAME)
-	rm -rf $(LIB_DIR)
+	$(MAKE) fclean -C $(MYLIB42_DIR)
 
 re : fclean all
 
