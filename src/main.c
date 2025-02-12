@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:31:17 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/12 10:45:12 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/12 11:34:21 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char *tests_path_for_find_cmd(char *cmd, char **tests_path)
 	{
 		path_with_slash = ft_strjoin(tests_path[i], "/");
 		path_cmd = ft_strjoin(path_with_slash, cmd);
-		if (access(path_cmd, F_OK) == 0)
+		if (access(path_cmd, F_OK) == 0 && (access(path_cmd, X_OK) == 0 ))
 		{
 			// ft_printf("%s\n", path_cmd);
 			free(path_with_slash);
@@ -127,7 +127,15 @@ char *get_path_cmd(char **split_cmd, char **envp)
 	
 	path_cmd = split_cmd[0];
 	if (str_contain_c(path_cmd, '/'))
+	{
+		if (access(path_cmd, F_OK) == -1 || (access(path_cmd, X_OK) == -1 ))
+		{
+			perror(path_cmd);
+			free_split(split_cmd);
+			exit(EXIT_FAILURE);
+		}
 		return (ft_strdup(path_cmd));
+	}
 	if (len_split(envp) == 0)
 		return (NULL);
 	path_env = get_var_path_in_env(envp);
@@ -136,7 +144,6 @@ char *get_path_cmd(char **split_cmd, char **envp)
 	free_split(paths_in_path_env);
 	return (path_cmd);
 }
-
 
 
 void	run_cmd(char *cmd, char **envp)
@@ -153,15 +160,14 @@ void	run_cmd(char *cmd, char **envp)
 	path_cmd = get_path_cmd(split_cmd, envp);
 	if (path_cmd == NULL)
 	{
-		ft_putstr_fd("command not found :", 2);
 		ft_putstr_fd(split_cmd[0], 2);
+		ft_putstr_fd(": command not found", 2);
 		ft_putstr_fd("\n", 2);
 		free_split(split_cmd);
 		exit(EXIT_FAILURE);
 	}
 	if (execve(path_cmd, split_cmd, envp) == -1)
 	{
-		perror(path_cmd);
 		free(path_cmd);
 		free_split(split_cmd);
 		exit(EXIT_FAILURE);
